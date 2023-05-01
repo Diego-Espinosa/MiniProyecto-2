@@ -8,6 +8,7 @@ import static java.awt.Color.white;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.*;
+import GUI.VentanaInstrucciones;
 /**
  *
  * @author diego
@@ -39,11 +40,21 @@ public class VentanaPrincipal {
         lblFondo.setSize(500,500);
         
        
+        
+        
         Color cafe= new Color(131, 51, 0);
         btnJugar.setBackground(cafe);
-        btnJugar.setBounds(175,200,150,50);
+        btnJugar.setBounds(175,175,150,50);
         btnJugar.setForeground(white);
         
+        btnInstrucciones.setBackground(cafe);
+        btnInstrucciones.setForeground(white);
+        btnInstrucciones.setBounds(175,230,150,50);
+        btnInstrucciones.addActionListener((ActionEvent e) -> {
+            JFrame1.setVisible(false);
+            VentanaInstrucciones ventanaInstrccuiones = new VentanaInstrucciones();
+            ventanaInstrccuiones.mostrarFrameInstrucciones();
+        });
         
         btnSalir.setBounds(400,0,100,25);
         btnSalir.setBackground(Color.red);
@@ -52,6 +63,7 @@ public class VentanaPrincipal {
             System.exit(0);
         });
         
+        panelPpal.add(btnInstrucciones);
         panelPpal.add(btnSalir);
         panelPpal.add(btnJugar);
         panelPpal.setLayout(null);
@@ -66,6 +78,10 @@ public class VentanaPrincipal {
         JFrame1.setUndecorated(true);
         JFrame1.setVisible(true);
         
+    }
+
+    public JFrame getJFrame1() {
+        return JFrame1;
     }
 
     
