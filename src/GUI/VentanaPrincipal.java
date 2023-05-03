@@ -9,6 +9,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.*;
 import GUI.VentanaInstrucciones;
+import GUI.VentanaJuego;
 /**
  *
  * @author diego
@@ -46,6 +47,11 @@ public class VentanaPrincipal {
         btnJugar.setBackground(cafe);
         btnJugar.setBounds(175,175,150,50);
         btnJugar.setForeground(white);
+        btnJugar.addActionListener((ActionEvent e) -> {
+            JFrame1.setVisible(false);
+            VentanaJuego ventanaJuego = new VentanaJuego();
+            ventanaJuego.mostrarFrameJuego();
+        });
         
         btnInstrucciones.setBackground(cafe);
         btnInstrucciones.setForeground(white);
