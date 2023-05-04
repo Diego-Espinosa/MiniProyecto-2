@@ -56,13 +56,6 @@ public class VentanaJuego {
                 panelTabla.add(celdas[fila][columna]);
             }
         }
-        for (int i = 0; i < celdas.length; i++) {
-            for (int j = 0; j < celdas[i].length; j++) {
-                // Creamos una etiqueta con la imagen y la agregamos a la celda correspondiente
-                JLabel imagenCeldas = new JLabel(imagenFondo);
-                celdas[i][j].add(imagenCeldas);
-            }
-        }
 
         lblFondo.setSize(500, 500);
 
