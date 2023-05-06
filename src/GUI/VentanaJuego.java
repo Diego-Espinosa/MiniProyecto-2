@@ -19,7 +19,7 @@ import javax.swing.*;
  *
  * @author diego
  */
-public class VentanaJuego {
+public final class VentanaJuego {
 
     private JFrame JFrame1;
     private JPanel panelPpal;
@@ -30,17 +30,62 @@ public class VentanaJuego {
     private ImageIcon imagenX;
     private ImageIcon imagenO;
     private int turno;
-    private static int matriz[][]= {{11, 12, 13}, {14, 15, 16}, {17, 18, 19}};
+    private static int matriz[][] = {{11, 12, 13}, {14, 15, 16}, {17, 18, 19}};
+    private static JLabel[][] celdas = new JLabel[3][3];
+    private MouseAdapter miMoseAdapter;
 
     public VentanaJuego() {
         initComponents();
+        terminarPartida();
     }
 
     private void initComponents() {
-
         turno = 1;
+
         imagenX = new ImageIcon(getClass().getResource("/imagenes/TicTacToeX.jpg"));
         imagenO = new ImageIcon(getClass().getResource("/imagenes/tictactoeO.png"));
+        Image nuevaImagenX = imagenX.getImage().getScaledInstance(50, 50, Image.SCALE_SMOOTH);
+        Image nuevaImagenO = imagenO.getImage().getScaledInstance(50, 50, Image.SCALE_SMOOTH);
+        ImageIcon nuevaImagenIconoO = new ImageIcon(nuevaImagenO);
+        ImageIcon nuevaImagenIconoX = new ImageIcon(nuevaImagenX);
+
+        miMoseAdapter = new MouseAdapter() {
+
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                turno++;
+
+                int fila = -1;
+                int columna = -1;
+                for (int i = 0; i < 3; i++) {
+                    for (int j = 0; j < 3; j++) {
+                        declararGanador();
+                        if (celdas[i][j] == e.getSource()) {
+                            fila = i;
+                            columna = j;
+                            if (turno % 2 == 0 && (celdas[i][j] == e.getSource())) {
+                                matriz[fila][columna] = 1;
+
+                            } else {
+                                matriz[fila][columna] = 2;
+                            }
+                            if (turno % 2 == 0) {
+                                celdas[fila][columna].setIcon(nuevaImagenIconoO);
+                                celdas[fila][columna].removeMouseListener(this);
+
+                            } else {
+                                celdas[fila][columna].setIcon(nuevaImagenIconoX);
+                                celdas[fila][columna].removeMouseListener(this);
+
+                            }
+
+                            break;
+                        }
+                    }
+                }
+            }
+        };
+
         JFrame1 = new JFrame();
         panelPpal = new JPanel();
         imagenFondo = new ImageIcon(getClass().getResource("/imagenes/maderaBG.jpg"));
@@ -50,11 +95,6 @@ public class VentanaJuego {
         Color cafe = new Color(131, 51, 0);
         panelTabla.setBounds(150, 150, 200, 200);
 
-        Image nuevaImagenX = imagenX.getImage().getScaledInstance(50, 50, Image.SCALE_SMOOTH);
-        Image nuevaImagenO = imagenO.getImage().getScaledInstance(50, 50, Image.SCALE_SMOOTH);
-        ImageIcon nuevaImagenIconoO = new ImageIcon(nuevaImagenO);
-        ImageIcon nuevaImagenIconoX = new ImageIcon(nuevaImagenX);
-
         btnSalir.setBounds(400, 0, 100, 25);
         btnSalir.setBackground(Color.red);
         btnSalir.setForeground(white);
@@ -62,49 +102,14 @@ public class VentanaJuego {
             System.exit(0);
         });
 
-        JLabel[][] celdas = new JLabel[3][3];
         for (int fila = 0; fila < 3; fila++) {
             for (int columna = 0; columna < 3; columna++) {
                 celdas[fila][columna] = new JLabel(imagenFondo);
+                celdas[fila][columna].addMouseListener(miMoseAdapter);
                 celdas[fila][columna].setPreferredSize(new Dimension(50, 50));
                 celdas[fila][columna].setBorder(BorderFactory.createLineBorder(Color.BLACK));
                 panelTabla.add(celdas[fila][columna]);
 
-                celdas[fila][columna].addMouseListener(new MouseAdapter() {
-
-                    @Override
-                    public void mouseClicked(MouseEvent e) {
-                        turno++;
-
-                        int fila = -1;
-                        int columna = -1;
-                        for (int i = 0; i < 3; i++) {
-                            for (int j = 0; j < 3; j++) {
-                                declararGanador();
-                                if (celdas[i][j] == e.getSource()) {
-                                    fila = i;
-                                    columna = j;
-                                    if (turno % 2 == 0 && (celdas[i][j] == e.getSource())) {
-                                        matriz[fila][columna] = 1;
-
-                                    } else {
-                                        matriz[fila][columna] = 2;
-                                    } if (turno % 2 == 0) {
-                                    celdas[fila][columna].setIcon(nuevaImagenIconoO);
-                                    celdas[fila][columna].removeMouseListener(this);
-
-                                } else {
-                                    celdas[fila][columna].setIcon(nuevaImagenIconoX);
-                                    celdas[fila][columna].removeMouseListener(this);
-
-                                   
-                                }
-                               
-                                 break;
-                                }                            }
-                        }
-                    }
-                });
             }
         }
 
@@ -158,20 +163,31 @@ public class VentanaJuego {
     }
 
     public void declararGanador() {
-        for(int i=0;i<3;i++){
-            for(int j =0;j<3;j++){
-                       System.out.print(matriz[i][j]+" ");
-            }                       System.out.println("");
+        terminarPartida();
+        for (int i = 0; i < 3; i++) {
+            for (int j = 0; j < 3; j++) {
+                System.out.print(matriz[i][j] + " ");
+            }
+            System.out.println("");
 
         }
         if (tieneTresEnLinea() && turno % 2 == 0) {
-            System.out.println("Ganador: Jugador 1");
+            System.out.println("Ganador: Jugador O");
 
         } else {
-            if (tieneTresEnLinea()&& turno % 2 != 0) {
-                System.out.println("Ganador: Jugador 2");
+            if (tieneTresEnLinea() && turno % 2 != 0) {
+                System.out.println("Ganador: Jugador X");
             }
         }
     }
-   
+
+    public void terminarPartida() {
+        if (tieneTresEnLinea()) {
+            for (int i = 0; i < 3; i++) {
+                for (int j = 0; j < 3; j++) {
+                    celdas[i][j].removeMouseListener(miMoseAdapter);
+                }
+            }
+        }
+    }
 }
