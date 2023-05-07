@@ -12,14 +12,21 @@ import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-
-import javax.swing.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import javax.swing.BorderFactory;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import java.util.Random;
 
 /**
  *
  * @author diego
  */
-public final class VentanaJuego {
+public class VentanaJuegoContraPC {
 
     private JFrame JFrame1;
     private JPanel panelPpal;
@@ -34,13 +41,12 @@ public final class VentanaJuego {
     private static JLabel[][] celdas = new JLabel[3][3];
     private MouseAdapter miMoseAdapter;
 
-    public VentanaJuego() {
+    public VentanaJuegoContraPC() {
         initComponents();
-        terminarPartida();
     }
 
     private void initComponents() {
-        turno = 1;
+        turno = 0;
 
         imagenX = new ImageIcon(getClass().getResource("/imagenes/TicTacToeX.jpg"));
         imagenO = new ImageIcon(getClass().getResource("/imagenes/tictactoeO.png"));
@@ -50,39 +56,49 @@ public final class VentanaJuego {
         ImageIcon nuevaImagenIconoX = new ImageIcon(nuevaImagenX);
 
         miMoseAdapter = new MouseAdapter() {
-
             @Override
             public void mouseClicked(MouseEvent e) {
+                Random random = new Random();
+
+                int numeroAleatorio1 = random.nextInt(3);
+                int numeroAleatorio2 = random.nextInt(3);
+                boolean condicionCumplida = false;
                 turno++;
 
                 int fila = -1;
                 int columna = -1;
+                
                 for (int i = 0; i < 3; i++) {
                     for (int j = 0; j < 3; j++) {
-                        declararGanador();
                         if (celdas[i][j] == e.getSource()) {
-                            fila = i;
-                            columna = j;
-                            if (turno % 2 == 0 && (celdas[i][j] == e.getSource())) {
-                                matriz[fila][columna] = 1;
+                            if (celdas[i][j].getIcon() == imagenFondo) {
 
-                            } else {
-                                matriz[fila][columna] = 2;
+                                if (turno % 2 == 0) {
+                                    celdas[numeroAleatorio1][numeroAleatorio2].setIcon(nuevaImagenIconoO);
+                                } else {
+                                    celdas[i][j].setIcon(nuevaImagenIconoX);
+                                }
+                                celdas[i][j].removeMouseListener(this);
+                                condicionCumplida = true;
+                                fila = i;
+                                columna = j;
+                            }else{
+                                condicionCumplida=false;
                             }
-                            if (turno % 2 == 0) {
-                                celdas[fila][columna].setIcon(nuevaImagenIconoO);
-                                celdas[fila][columna].removeMouseListener(this);
-
-                            } else {
-                                celdas[fila][columna].setIcon(nuevaImagenIconoX);
-                                celdas[fila][columna].removeMouseListener(this);
-
-                            }
-
                             break;
                         }
                     }
                 }
+
+                // Asignar el valor correspondiente en la matriz
+                if (turno % 2 == 0) {
+                    matriz[numeroAleatorio1][numeroAleatorio2] = 2;
+                } else {
+                    matriz[fila][columna] = 1;
+
+                }
+
+                declararGanador();
             }
         };
 
@@ -163,7 +179,6 @@ public final class VentanaJuego {
     }
 
     public void declararGanador() {
-        terminarPartida();
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 3; j++) {
                 System.out.print(matriz[i][j] + " ");
@@ -173,10 +188,13 @@ public final class VentanaJuego {
         }
         if (tieneTresEnLinea() && turno % 2 == 0) {
             System.out.println("Ganador: Jugador O");
+            terminarPartida();
 
         } else {
             if (tieneTresEnLinea() && turno % 2 != 0) {
                 System.out.println("Ganador: Jugador X");
+                terminarPartida();
+
             }
         }
     }

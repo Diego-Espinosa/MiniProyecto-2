@@ -9,7 +9,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.*;
 import GUI.VentanaInstrucciones;
-import GUI.VentanaJuego;
+import GUI.VentanaJuegoUnoContraUno;
+import GUI.VentanaNombresDosJugadores;
+import GUI.VentanaModo;
 /**
  *
  * @author diego
@@ -49,8 +51,8 @@ public class VentanaPrincipal {
         btnJugar.setForeground(white);
         btnJugar.addActionListener((ActionEvent e) -> {
             JFrame1.setVisible(false);
-            VentanaJuego ventanaJuego = new VentanaJuego();
-            ventanaJuego.mostrarFrameJuego();
+            VentanaModo ventanaModo=new VentanaModo();
+            ventanaModo.getJFrame1().setVisible(true);
         });
         
         btnInstrucciones.setBackground(cafe);
