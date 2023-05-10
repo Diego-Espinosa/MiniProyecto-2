@@ -36,72 +36,65 @@ public class VentanaJuegoContraPC {
     private JPanel panelTabla;
     private ImageIcon imagenX;
     private ImageIcon imagenO;
-    private int turno;
+    private boolean turnoHumano;
     private static int matriz[][] = {{11, 12, 13}, {14, 15, 16}, {17, 18, 19}};
     private static JLabel[][] celdas = new JLabel[3][3];
     private MouseAdapter miMoseAdapter;
 
     public VentanaJuegoContraPC() {
         initComponents();
+
     }
 
     private void initComponents() {
-        turno = 0;
-
+        turnoHumano = true;
         imagenX = new ImageIcon(getClass().getResource("/imagenes/TicTacToeX.jpg"));
-        imagenO = new ImageIcon(getClass().getResource("/imagenes/tictactoeO.png"));
         Image nuevaImagenX = imagenX.getImage().getScaledInstance(50, 50, Image.SCALE_SMOOTH);
-        Image nuevaImagenO = imagenO.getImage().getScaledInstance(50, 50, Image.SCALE_SMOOTH);
-        ImageIcon nuevaImagenIconoO = new ImageIcon(nuevaImagenO);
         ImageIcon nuevaImagenIconoX = new ImageIcon(nuevaImagenX);
-
+        boolean[][] celdasLibres = new boolean[3][3];
+        for (int i = 0; i < 3; i++) {
+            for (int j = 0; j < 3; j++) {
+                celdasLibres[i][j] = false;
+            }
+        }
         miMoseAdapter = new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                Random random = new Random();
-
-                int numeroAleatorio1 = random.nextInt(3);
-                int numeroAleatorio2 = random.nextInt(3);
-                boolean condicionCumplida = false;
-                turno++;
-
+                System.out.println("TurnoHumano" + turnoHumano);
                 int fila = -1;
                 int columna = -1;
-                
                 for (int i = 0; i < 3; i++) {
                     for (int j = 0; j < 3; j++) {
                         if (celdas[i][j] == e.getSource()) {
-                            if (celdas[i][j].getIcon() == imagenFondo) {
-
-                                if (turno % 2 == 0) {
-                                    celdas[numeroAleatorio1][numeroAleatorio2].setIcon(nuevaImagenIconoO);
-                                } else {
-                                    celdas[i][j].setIcon(nuevaImagenIconoX);
-                                }
-                                celdas[i][j].removeMouseListener(this);
-                                condicionCumplida = true;
-                                fila = i;
-                                columna = j;
-                            }else{
-                                condicionCumplida=false;
-                            }
+                            fila = i;
+                            columna = j;
                             break;
                         }
                     }
                 }
 
-                // Asignar el valor correspondiente en la matriz
-                if (turno % 2 == 0) {
-                    matriz[numeroAleatorio1][numeroAleatorio2] = 2;
-                } else {
+                if (turnoHumano) {
+
                     matriz[fila][columna] = 1;
+                    celdas[fila][columna].setIcon(nuevaImagenIconoX);
+                    celdas[fila][columna].removeMouseListener(this);
+                    turnoHumano = false;
+
+                } else {
+                    jugarComputadora();
 
                 }
-
-                declararGanador();
+                if (tieneTresEnLinea() && turnoHumano) {
+                    System.out.println("Ganador: Jugador O");
+                    terminarPartida();
+                } else {
+                    if (tieneTresEnLinea() && !turnoHumano) {
+                        System.out.println("Ganador: Jugador X");
+                        terminarPartida();
+                    }
+                }
             }
         };
-
         JFrame1 = new JFrame();
         panelPpal = new JPanel();
         imagenFondo = new ImageIcon(getClass().getResource("/imagenes/maderaBG.jpg"));
@@ -110,13 +103,6 @@ public class VentanaJuegoContraPC {
         panelTabla = new JPanel(new GridLayout(3, 3));
         Color cafe = new Color(131, 51, 0);
         panelTabla.setBounds(150, 150, 200, 200);
-
-        btnSalir.setBounds(400, 0, 100, 25);
-        btnSalir.setBackground(Color.red);
-        btnSalir.setForeground(white);
-        btnSalir.addActionListener((ActionEvent e) -> {
-            System.exit(0);
-        });
 
         for (int fila = 0; fila < 3; fila++) {
             for (int columna = 0; columna < 3; columna++) {
@@ -127,22 +113,53 @@ public class VentanaJuegoContraPC {
                 panelTabla.add(celdas[fila][columna]);
 
             }
+
+            btnSalir.setBounds(400, 0, 100, 25);
+            btnSalir.setBackground(Color.red);
+            btnSalir.setForeground(white);
+            btnSalir.addActionListener((ActionEvent e) -> {
+                System.exit(0);
+            });
+
+            lblFondo.setSize(500, 500);
+
+            panelPpal.setLayout(null);
+            panelPpal.add(btnSalir);
+            panelPpal.setSize(500, 500);
+            panelPpal.add(lblFondo);
+
+            JFrame1.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+            JFrame1.setSize(500, 500);
+            JFrame1.add(panelTabla);
+            JFrame1.getContentPane().add(panelPpal);
+            JFrame1.setLocationRelativeTo(null);
+            JFrame1.setUndecorated(true);
         }
+    }
 
-        lblFondo.setSize(500, 500);
+    private void jugarComputadora() {
+        imagenO = new ImageIcon(getClass().getResource("/imagenes/tictactoeO.png"));
+        Image nuevaImagenO = imagenO.getImage().getScaledInstance(50, 50, Image.SCALE_SMOOTH);
+        ImageIcon nuevaImagenIconoO = new ImageIcon(nuevaImagenO);
 
-        panelPpal.setLayout(null);
-        panelPpal.add(btnSalir);
-        panelPpal.setSize(500, 500);
-        panelPpal.add(lblFondo);
+        if (!turnoHumano) {
+            Random random = new Random();
+            int fila = -1;
+            int columna = -1;
 
-        JFrame1.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        JFrame1.setSize(500, 500);
-        JFrame1.add(panelTabla);
-        JFrame1.getContentPane().add(panelPpal);
-        JFrame1.setLocationRelativeTo(null);
-        JFrame1.setUndecorated(true);
+            do {
 
+                fila = random.nextInt(3);
+                columna = random.nextInt(3);
+            } while (matriz[fila][columna] == 1 || matriz[fila][columna] == 2);
+            celdas[fila][columna].setIcon(nuevaImagenIconoO);
+            celdas[fila][columna].removeMouseListener(miMoseAdapter);
+            matriz[fila][columna] = 2;
+            turnoHumano = true;
+
+        } else {
+            turnoHumano = false;
+        }
     }
 
     public void mostrarFrameJuego() {
@@ -176,27 +193,6 @@ public class VentanaJuegoContraPC {
         }
 
         return false;
-    }
-
-    public void declararGanador() {
-        for (int i = 0; i < 3; i++) {
-            for (int j = 0; j < 3; j++) {
-                System.out.print(matriz[i][j] + " ");
-            }
-            System.out.println("");
-
-        }
-        if (tieneTresEnLinea() && turno % 2 == 0) {
-            System.out.println("Ganador: Jugador O");
-            terminarPartida();
-
-        } else {
-            if (tieneTresEnLinea() && turno % 2 != 0) {
-                System.out.println("Ganador: Jugador X");
-                terminarPartida();
-
-            }
-        }
     }
 
     public void terminarPartida() {
