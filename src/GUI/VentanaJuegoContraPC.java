@@ -21,6 +21,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import java.util.Random;
+import static javax.swing.SpringLayout.NORTH;
 
 /**
  *
@@ -40,6 +41,10 @@ public class VentanaJuegoContraPC {
     private static int matriz[][] = {{11, 12, 13}, {14, 15, 16}, {17, 18, 19}};
     private static JLabel[][] celdas = new JLabel[3][3];
     private MouseAdapter miMoseAdapter;
+    private int victoriasJugadorO;
+    private int victoriasJugadorX;
+    private int empates;
+    private JLabel panelEstadistica;
 
     public VentanaJuegoContraPC() {
         initComponents();
@@ -47,6 +52,10 @@ public class VentanaJuegoContraPC {
     }
 
     private void initComponents() {
+        victoriasJugadorO = 0;
+        victoriasJugadorX = 0;
+        empates = 0;
+        
         turnoHumano = true;
         imagenX = new ImageIcon(getClass().getResource("/imagenes/TicTacToeX.jpg"));
         Image nuevaImagenX = imagenX.getImage().getScaledInstance(50, 50, Image.SCALE_SMOOTH);
@@ -57,6 +66,10 @@ public class VentanaJuegoContraPC {
                 celdasLibres[i][j] = false;
             }
         }
+        
+       
+        
+        //Escucha
         miMoseAdapter = new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
@@ -86,17 +99,36 @@ public class VentanaJuegoContraPC {
                 }
                 if (tieneTresEnLinea() && turnoHumano) {
                     System.out.println("Ganador: Jugador O");
+                    victoriasJugadorO++;
+                    System.out.println(victoriasJugadorO);
                     terminarPartida();
+                    String victoriasO = Integer.toString(victoriasJugadorO);
+                        panelEstadistica.setText(victoriasO);
+                    
                 } else {
                     if (tieneTresEnLinea() && !turnoHumano) {
                         System.out.println("Ganador: Jugador X");
+                        victoriasJugadorX++;
+                        System.out.println(victoriasJugadorX);
                         terminarPartida();
+                        String victoriasX = Integer.toString(victoriasJugadorX);
+                        panelEstadistica.setText(victoriasX);
+                        
+                       
                     }
                 }
             }
         };
+        
+        
         JFrame1 = new JFrame();
         panelPpal = new JPanel();
+        panelEstadistica = new JLabel();
+        String victoriasX = Integer.toString(victoriasJugadorX);
+        panelEstadistica.setText(victoriasX);
+        String victoriasO = Integer.toString(victoriasJugadorO);
+        panelEstadistica.setText(victoriasO);
+        JFrame1.add(panelEstadistica, NORTH);
         imagenFondo = new ImageIcon(getClass().getResource("/imagenes/maderaBG.jpg"));
         lblFondo = new JLabel(imagenFondo);
         btnSalir = new JButton("Salir");
@@ -135,6 +167,9 @@ public class VentanaJuegoContraPC {
             JFrame1.setLocationRelativeTo(null);
             JFrame1.setUndecorated(true);
         }
+        
+        
+        
     }
 
     private void jugarComputadora() {
@@ -201,6 +236,9 @@ public class VentanaJuegoContraPC {
                 for (int j = 0; j < 3; j++) {
                     celdas[i][j].removeMouseListener(miMoseAdapter);
                 }
+
+
+
             }
         }
     }
