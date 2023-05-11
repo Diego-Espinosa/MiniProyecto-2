@@ -10,6 +10,7 @@ import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
+import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
@@ -22,12 +23,14 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import java.util.Random;
 import static javax.swing.SpringLayout.NORTH;
+import java.awt.event.KeyListener;
+import javax.swing.SwingUtilities;
 
 /**
  *
  * @author diego
  */
-public class VentanaJuegoContraPC {
+public class VentanaJuegoContraPC implements KeyListener {
 
     private JFrame JFrame1;
     private JPanel panelPpal;
@@ -45,6 +48,8 @@ public class VentanaJuegoContraPC {
     private int victoriasJugadorX;
     private int empates;
     private JLabel panelEstadistica;
+    private int currentRow = 0;
+    private int currentCol = 0;
 
     public VentanaJuegoContraPC() {
         initComponents();
@@ -55,7 +60,7 @@ public class VentanaJuegoContraPC {
         victoriasJugadorO = 0;
         victoriasJugadorX = 0;
         empates = 0;
-        
+
         turnoHumano = true;
         imagenX = new ImageIcon(getClass().getResource("/imagenes/TicTacToeX.jpg"));
         Image nuevaImagenX = imagenX.getImage().getScaledInstance(50, 50, Image.SCALE_SMOOTH);
@@ -66,9 +71,7 @@ public class VentanaJuegoContraPC {
                 celdasLibres[i][j] = false;
             }
         }
-        
-       
-        
+
         //Escucha
         miMoseAdapter = new MouseAdapter() {
             @Override
@@ -103,8 +106,8 @@ public class VentanaJuegoContraPC {
                     System.out.println(victoriasJugadorO);
                     terminarPartida();
                     String victoriasO = Integer.toString(victoriasJugadorO);
-                        panelEstadistica.setText(victoriasO);
-                    
+                    panelEstadistica.setText(victoriasO);
+
                 } else {
                     if (tieneTresEnLinea() && !turnoHumano) {
                         System.out.println("Ganador: Jugador X");
@@ -113,14 +116,12 @@ public class VentanaJuegoContraPC {
                         terminarPartida();
                         String victoriasX = Integer.toString(victoriasJugadorX);
                         panelEstadistica.setText(victoriasX);
-                        
-                       
+
                     }
                 }
             }
         };
-        
-        
+
         JFrame1 = new JFrame();
         panelPpal = new JPanel();
         panelEstadistica = new JLabel();
@@ -135,7 +136,10 @@ public class VentanaJuegoContraPC {
         panelTabla = new JPanel(new GridLayout(3, 3));
         Color cafe = new Color(131, 51, 0);
         panelTabla.setBounds(150, 150, 200, 200);
-
+        panelTabla.setFocusable(true);
+        panelTabla.requestFocusInWindow();
+        panelTabla.requestFocus();
+        panelTabla.addKeyListener(this);
         for (int fila = 0; fila < 3; fila++) {
             for (int columna = 0; columna < 3; columna++) {
                 celdas[fila][columna] = new JLabel(imagenFondo);
@@ -167,9 +171,7 @@ public class VentanaJuegoContraPC {
             JFrame1.setLocationRelativeTo(null);
             JFrame1.setUndecorated(true);
         }
-        
-        
-        
+
     }
 
     private void jugarComputadora() {
@@ -203,6 +205,9 @@ public class VentanaJuegoContraPC {
 
         } else {
             JFrame1.setVisible(true);
+            SwingUtilities.invokeLater(() -> {
+                panelTabla.requestFocus();
+            });
         }
     }
 
@@ -237,9 +242,65 @@ public class VentanaJuegoContraPC {
                     celdas[i][j].removeMouseListener(miMoseAdapter);
                 }
 
-
-
             }
         }
+    }
+
+    @Override
+    public void keyTyped(KeyEvent e) {
+    }
+
+    @Override
+    public void keyPressed(KeyEvent e) {
+        int key = e.getKeyCode();
+
+        switch (key) {
+            case KeyEvent.VK_UP:
+                if (currentRow > 0) {
+                    celdas[currentRow][currentCol].setBorder(BorderFactory.createLineBorder(Color.BLACK));
+
+                    currentRow--;
+                    celdas[currentRow][currentCol].setBorder(BorderFactory.createLineBorder(Color.GREEN));
+
+                }
+                break;
+            case KeyEvent.VK_DOWN:
+                if (currentRow < 2) {
+                    celdas[currentRow][currentCol].setBorder(BorderFactory.createLineBorder(Color.BLACK));
+
+                    currentRow++;
+                    celdas[currentRow][currentCol].setBorder(BorderFactory.createLineBorder(Color.GREEN));
+
+                }
+                break;
+            case KeyEvent.VK_LEFT:
+                if (currentCol > 0) {
+
+                    celdas[currentRow][currentCol].setBorder(BorderFactory.createLineBorder(Color.BLACK));
+                    currentCol--;
+
+                    celdas[currentRow][currentCol].setBorder(BorderFactory.createLineBorder(Color.GREEN));
+                }
+                break;
+
+            case KeyEvent.VK_RIGHT:
+                if (currentCol < 2) {
+                    celdas[currentRow][currentCol].setBorder(BorderFactory.createLineBorder(Color.BLACK));
+                    currentCol++;
+                    celdas[currentRow][currentCol].setBorder(BorderFactory.createLineBorder(Color.GREEN));
+
+                    break;
+
+                }
+            case KeyEvent.VK_ENTER:
+                int fila = currentRow;
+                int columna = currentCol;
+                celdas[fila][columna].dispatchEvent(new MouseEvent(celdas[fila][columna], MouseEvent.MOUSE_CLICKED, System.currentTimeMillis(), 0, 0, 0, 1, false));
+                break;
+        }
+    }
+
+    @Override
+    public void keyReleased(KeyEvent e) {
     }
 }
