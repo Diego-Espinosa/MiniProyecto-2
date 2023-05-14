@@ -10,16 +10,17 @@ import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
+import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-
+import java.awt.event.KeyListener;
 import javax.swing.*;
 
 /**
  *
  * @author diego
  */
-public final class VentanaJuegoUnoContraUno {
+public final class VentanaJuegoUnoContraUno implements KeyListener {
 
     private JFrame JFrame1;
     private JPanel panelPpal;
@@ -33,6 +34,8 @@ public final class VentanaJuegoUnoContraUno {
     private static int matriz[][] = {{11, 12, 13}, {14, 15, 16}, {17, 18, 19}};
     private static JLabel[][] celdas = new JLabel[3][3];
     private MouseAdapter miMoseAdapter;
+    private int currentRow = 0;
+    private int currentCol = 0;
 
     public VentanaJuegoUnoContraUno() {
         initComponents();
@@ -93,7 +96,10 @@ public final class VentanaJuegoUnoContraUno {
         panelTabla = new JPanel(new GridLayout(3, 3));
         Color cafe = new Color(131, 51, 0);
         panelTabla.setBounds(150, 150, 200, 200);
-
+        panelTabla.setFocusable(true);
+        panelTabla.requestFocusInWindow();
+        panelTabla.requestFocus();
+        panelTabla.addKeyListener(this);
         btnSalir.setBounds(400, 0, 100, 25);
         btnSalir.setBackground(Color.red);
         btnSalir.setForeground(white);
@@ -122,7 +128,9 @@ public final class VentanaJuegoUnoContraUno {
         JFrame1.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         JFrame1.setSize(500, 500);
         JFrame1.add(panelTabla);
+
         JFrame1.getContentPane().add(panelPpal);
+        panelPpal.requestFocus();
         JFrame1.setLocationRelativeTo(null);
         JFrame1.setUndecorated(true);
 
@@ -134,6 +142,9 @@ public final class VentanaJuegoUnoContraUno {
 
         } else {
             JFrame1.setVisible(true);
+            SwingUtilities.invokeLater(() -> {
+                panelTabla.requestFocus();
+            });
         }
     }
 
@@ -171,12 +182,12 @@ public final class VentanaJuegoUnoContraUno {
         }
         if (tieneTresEnLinea() && turno % 2 == 0) {
             System.out.println("Ganador: Jugador O");
-                    terminarPartida();
+            terminarPartida();
 
         } else {
             if (tieneTresEnLinea() && turno % 2 != 0) {
                 System.out.println("Ganador: Jugador X");
-                        terminarPartida();
+                terminarPartida();
 
             }
         }
@@ -190,5 +201,64 @@ public final class VentanaJuegoUnoContraUno {
                 }
             }
         }
+    }
+
+    @Override
+    public void keyTyped(KeyEvent e) {
+    }
+
+    @Override
+    public void keyPressed(KeyEvent e) {
+        int key = e.getKeyCode();
+
+        switch (key) {
+            case KeyEvent.VK_UP:
+                if (currentRow > 0) {
+                    celdas[currentRow][currentCol].setBorder(BorderFactory.createLineBorder(Color.BLACK));
+
+                    currentRow--;
+                    celdas[currentRow][currentCol].setBorder(BorderFactory.createLineBorder(Color.GREEN));
+
+                }
+                break;
+            case KeyEvent.VK_DOWN:
+                if (currentRow < 2) {
+                    celdas[currentRow][currentCol].setBorder(BorderFactory.createLineBorder(Color.BLACK));
+
+                    currentRow++;
+                    celdas[currentRow][currentCol].setBorder(BorderFactory.createLineBorder(Color.GREEN));
+
+                }
+                break;
+            case KeyEvent.VK_LEFT:
+                if (currentCol > 0) {
+
+                    celdas[currentRow][currentCol].setBorder(BorderFactory.createLineBorder(Color.BLACK));
+                    currentCol--;
+
+                    celdas[currentRow][currentCol].setBorder(BorderFactory.createLineBorder(Color.GREEN));
+                }
+                break;
+
+            case KeyEvent.VK_RIGHT:
+                if (currentCol < 2) {
+                    celdas[currentRow][currentCol].setBorder(BorderFactory.createLineBorder(Color.BLACK));
+                    currentCol++;
+                    celdas[currentRow][currentCol].setBorder(BorderFactory.createLineBorder(Color.GREEN));
+
+                    break;
+
+                }
+            case KeyEvent.VK_ENTER:
+                int fila = currentRow;
+                int columna = currentCol;
+                celdas[fila][columna].dispatchEvent(new MouseEvent(celdas[fila][columna], MouseEvent.MOUSE_CLICKED, System.currentTimeMillis(), 0, 0, 0, 1, false));
+                break;
+        }
+
+    }
+
+    @Override
+    public void keyReleased(KeyEvent e) {
     }
 }
