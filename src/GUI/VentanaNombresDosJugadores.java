@@ -13,7 +13,8 @@ import java.awt.event.MouseEvent;
 
 /**
  *
- * @author diego
+ * @author Diego Espinosa-
+ * @author Brigitte Chavez-2041700
  */
 public final class VentanaNombresDosJugadores {
 

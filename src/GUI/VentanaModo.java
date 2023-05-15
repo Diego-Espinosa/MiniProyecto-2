@@ -12,7 +12,8 @@ import GUI.VentanaJuegoContraPC;
 import java.awt.event.ActionListener;
 /**
  *
- * @author diego
+ * @author Diego Espinosa-
+ * @author Brigitte Chavez-2041700
  */
 public class VentanaModo {
 

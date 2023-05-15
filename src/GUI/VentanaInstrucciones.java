@@ -14,7 +14,8 @@ import java.awt.event.ActionEvent;
 import javax.swing.JButton;
 /**
  *
- * @author diego
+ * @author Diego Espinosa-
+ * @author Brigitte Chavez-2041700
  */
 public class VentanaInstrucciones {
     private JFrame JFrame1;

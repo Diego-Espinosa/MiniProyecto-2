@@ -6,7 +6,8 @@ package tictactoe;
 import GUI.VentanaPrincipal;
 /**
  *
- * @author diego
+ * @author Diego Espinosa-
+ * @author Brigitte Chavez-2041700
  */
 public class TicTacToe {
 

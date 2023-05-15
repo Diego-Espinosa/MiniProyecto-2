@@ -28,7 +28,8 @@ import javax.swing.SwingUtilities;
 
 /**
  *
- * @author diego
+ * @author Diego Espinosa-
+ * @author Brigitte Chavez-2041700
  */
 public class VentanaJuegoContraPC implements KeyListener {
 

@@ -18,7 +18,8 @@ import javax.swing.JTextField;
 
 /**
  *
- * @author diego
+ * @author Diego Espinosa-
+ * @author Brigitte Chavez-2041700
  */
 public class VentanaNombreUnJugador {
     

@@ -14,7 +14,8 @@ import GUI.VentanaNombresDosJugadores;
 import GUI.VentanaModo;
 /**
  *
- * @author diego
+ * @author Diego Espinosa-
+ * @author Brigitte Chavez-2041700
  */
 public class VentanaPrincipal {
     private JFrame JFrame1;

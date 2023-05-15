@@ -18,7 +18,8 @@ import javax.swing.*;
 
 /**
  *
- * @author diego
+ * @author Diego Espinosa-
+ * @author Brigitte Chavez-2041700
  */
 public final class VentanaJuegoUnoContraUno implements KeyListener {
 
@@ -199,15 +200,13 @@ public final class VentanaJuegoUnoContraUno implements KeyListener {
 
         }
         if (tieneTresEnLinea() && turno % 2 == 0) {
-         
+            lblGanador.setText("El ganador es " + nombreJugadorUno);
             terminarPartida();
-            lblGanador.setText(nombreJugadorUno);
 
         } else {
             if (tieneTresEnLinea() && turno % 2 != 0) {
-                
+                lblGanador.setText("El ganador es " + nombreJugadorDos);
                 terminarPartida();
-                lblGanador.setText(nombreJugadorDos);
 
             }
         }
