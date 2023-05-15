@@ -66,7 +66,7 @@ public class VentanaJuegoContraPC implements KeyListener {
         empates = 0;
 
         lblGanador = new JLabel();
-        lblGanador.setBounds(100, 80, 200, 50);
+        lblGanador.setBounds(225, 80, 200, 50);
         lblGanador.setBackground(cafe);
         lblGanador.setForeground(white);
         lblGanador.setVisible(true);
@@ -142,7 +142,7 @@ public class VentanaJuegoContraPC implements KeyListener {
         panelEstadistica.setText(victoriasX);
         String victoriasO = Integer.toString(victoriasJugadorO);
         panelEstadistica.setText(victoriasO);
-        JFrame1.add(panelEstadistica, NORTH);
+        //JFrame1.add(panelEstadistica, NORTH);
         imagenFondo = new ImageIcon(getClass().getResource("/imagenes/maderaBG.jpg"));
         lblFondo = new JLabel(imagenFondo);
         btnSalir = new JButton("Salir");

@@ -10,6 +10,7 @@ import static java.awt.Color.white;
 import java.awt.event.ActionEvent;
 import GUI.VentanaJuegoContraPC;
 import java.awt.event.ActionListener;
+import static javax.swing.SpringLayout.NORTH;
 /**
  *
  * @author Diego Espinosa-
@@ -43,7 +44,8 @@ public class VentanaModo {
         btn2 = new JButton("2");
         btn3 = new JButton("3");
         btn4 = new JButton("4");
-        lblnumPartidas = new JLabel("Número de partidas");
+        lblnumPartidas = new JLabel();
+        lblnumPartidas.setText("Seleccione las partidas");
         
         btnSalir = new JButton("Salir");
         
@@ -73,8 +75,7 @@ public class VentanaModo {
         btn1.setForeground(white);
         btn1.setVisible(true);
         btn1.addActionListener((ActionEvent e) -> {
-            //llamar método en la clase VentanaJuegoUnoContaUno para actualizar el número de turnos de los jugadores
-            System.out.println("Se presionó el botón 1");
+            //Agregar acción
         });
         
         btn2.setBounds(180,350, 50, 50);
@@ -92,9 +93,11 @@ public class VentanaModo {
         btn4.setForeground(white);
         btn4.setVisible(true);
         
-        lblnumPartidas.setBounds(150,270, 150, 150);
-        btn4.setBackground(cafe);
-        btn4.setForeground(white);
+        lblnumPartidas.setBounds(170,250, 150, 150);
+        lblnumPartidas.setBackground(cafe);
+        lblnumPartidas.setForeground(white);
+        lblnumPartidas.setVisible(true);
+        
         
         
        
@@ -125,13 +128,15 @@ public class VentanaModo {
         panelPpal.add(btnSalir);
         panelPpal.add(btnUnoContraUno);
         panelPpal.add(btnContraPc);
-        panelPpal.add(lblFondo);
         
+        
+        panelPpal.add(lblnumPartidas, NORTH);
         panelPpal.add(btn1);
         panelPpal.add(btn2);
         panelPpal.add(btn3);
         panelPpal.add(btn4);
-        panelPpal.add(lblnumPartidas);
+        panelPpal.add(lblFondo);
+        
         
         JFrame1.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         JFrame1.setSize(500, 500);
