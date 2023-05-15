@@ -50,6 +50,7 @@ public class VentanaJuegoContraPC implements KeyListener {
     private JLabel panelEstadistica;
     private int currentRow = 0;
     private int currentCol = 0;
+    private JLabel lblGanador; 
 
     public VentanaJuegoContraPC() {
         initComponents();
@@ -57,10 +58,19 @@ public class VentanaJuegoContraPC implements KeyListener {
     }
 
     private void initComponents() {
+        Color cafe = new Color(131, 51, 0);
+        
         victoriasJugadorO = 0;
         victoriasJugadorX = 0;
         empates = 0;
 
+        lblGanador = new JLabel();
+        lblGanador.setBounds(100, 80, 200, 50);
+        lblGanador.setBackground(Color.WHITE);
+        lblGanador.setForeground(Color.BLACK);
+        
+        
+        
         turnoHumano = true;
         imagenX = new ImageIcon(getClass().getResource("/imagenes/TicTacToeX.jpg"));
         Image nuevaImagenX = imagenX.getImage().getScaledInstance(50, 50, Image.SCALE_SMOOTH);
@@ -101,7 +111,7 @@ public class VentanaJuegoContraPC implements KeyListener {
 
                 }
                 if (tieneTresEnLinea() && turnoHumano) {
-                    System.out.println("Ganador: Jugador O");
+                    lblGanador.setText("¡Te ha vencido una computadora!");
                     victoriasJugadorO++;
                     System.out.println(victoriasJugadorO);
                     terminarPartida();
@@ -110,8 +120,9 @@ public class VentanaJuegoContraPC implements KeyListener {
 
                 } else {
                     if (tieneTresEnLinea() && !turnoHumano) {
-                        System.out.println("Ganador: Jugador X");
+                        
                         victoriasJugadorX++;
+                        lblGanador.setText("¡Ganaste!");
                         System.out.println(victoriasJugadorX);
                         terminarPartida();
                         String victoriasX = Integer.toString(victoriasJugadorX);
@@ -119,6 +130,7 @@ public class VentanaJuegoContraPC implements KeyListener {
 
                     }
                 }
+                
             }
         };
 
@@ -134,7 +146,7 @@ public class VentanaJuegoContraPC implements KeyListener {
         lblFondo = new JLabel(imagenFondo);
         btnSalir = new JButton("Salir");
         panelTabla = new JPanel(new GridLayout(3, 3));
-        Color cafe = new Color(131, 51, 0);
+        
         panelTabla.setBounds(150, 150, 200, 200);
         panelTabla.setFocusable(true);
         panelTabla.requestFocusInWindow();
@@ -159,6 +171,7 @@ public class VentanaJuegoContraPC implements KeyListener {
 
             lblFondo.setSize(500, 500);
 
+            panelPpal.add(lblGanador);
             panelPpal.setLayout(null);
             panelPpal.add(btnSalir);
             panelPpal.setSize(500, 500);

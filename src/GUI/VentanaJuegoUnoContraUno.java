@@ -36,13 +36,23 @@ public final class VentanaJuegoUnoContraUno implements KeyListener {
     private MouseAdapter miMoseAdapter;
     private int currentRow = 0;
     private int currentCol = 0;
+    private JLabel lblGanador; 
 
     public VentanaJuegoUnoContraUno() {
         initComponents();
     }
 
     private void initComponents() {
+        Color cafe = new Color(131, 51, 0);
+        
+        
         turno = 1;
+        
+        lblGanador = new JLabel();
+        lblGanador.setBounds(80, 100, 200, 50);
+        lblGanador.setBackground(cafe);
+        lblGanador.setForeground(white);
+        lblGanador.setVisible(true);
 
         imagenX = new ImageIcon(getClass().getResource("/imagenes/TicTacToeX.jpg"));
         imagenO = new ImageIcon(getClass().getResource("/imagenes/tictactoeO.png"));
@@ -94,7 +104,6 @@ public final class VentanaJuegoUnoContraUno implements KeyListener {
         lblFondo = new JLabel(imagenFondo);
         btnSalir = new JButton("Salir");
         panelTabla = new JPanel(new GridLayout(3, 3));
-        Color cafe = new Color(131, 51, 0);
         panelTabla.setBounds(150, 150, 200, 200);
         panelTabla.setFocusable(true);
         panelTabla.requestFocusInWindow();
