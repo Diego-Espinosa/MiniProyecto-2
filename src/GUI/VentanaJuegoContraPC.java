@@ -66,9 +66,9 @@ public class VentanaJuegoContraPC implements KeyListener {
 
         lblGanador = new JLabel();
         lblGanador.setBounds(100, 80, 200, 50);
-        lblGanador.setBackground(Color.WHITE);
-        lblGanador.setForeground(Color.BLACK);
-        
+        lblGanador.setBackground(cafe);
+        lblGanador.setForeground(white);
+        lblGanador.setVisible(true);
         
         
         turnoHumano = true;

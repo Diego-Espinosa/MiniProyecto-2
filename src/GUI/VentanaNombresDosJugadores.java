@@ -8,7 +8,6 @@ import java.awt.Color;
 import static java.awt.Color.white;
 import java.awt.event.ActionEvent;
 import javax.swing.*;
-import GUI.VentanaJuegoUnoContraUno;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
@@ -26,6 +25,8 @@ public final class VentanaNombresDosJugadores {
     private JButton btnSalir;
     private JTextField NombreUno;
     private JTextField NombreDos;
+    private String nombreJugadorUno;
+    private String nombreJugadorDos;
 
     public VentanaNombresDosJugadores() {
         initComponents();
@@ -38,8 +39,8 @@ public final class VentanaNombresDosJugadores {
         panelPpal = new JPanel();
         imagenFondo = new ImageIcon(getClass().getResource("/imagenes/maderaBG.jpg"));
         lblFondo = new JLabel(imagenFondo);
-        NombreUno = new JTextField("Nombre jugador 1");
-        NombreDos = new JTextField("Nombre jugador 2");
+        NombreUno = new JTextField("Jugador 1");
+        NombreDos = new JTextField("Jugador 2");
 
         NombreUno.setBounds(100, 200, 105, 20);
         NombreDos.setBounds(100, 250, 105, 20);
@@ -72,11 +73,16 @@ public final class VentanaNombresDosJugadores {
         btnContinuar.setBackground(cafe);
         btnContinuar.setForeground(white);
         btnContinuar.addActionListener((ActionEvent e) -> {
+            String nombreJugadorUno = NombreUno.getText();
+            String nombreJugadorDos = NombreDos.getText();
             JFrame1.setVisible(false);
-            VentanaJuegoUnoContraUno ventanaJuego = new VentanaJuegoUnoContraUno();
+            //
+            VentanaJuegoUnoContraUno ventanaJuego = new VentanaJuegoUnoContraUno(this);
             ventanaJuego.mostrarFrameJuego();
         });
 
+        
+        
         panelPpal.setLayout(null);
         panelPpal.add(btnSalir);
         panelPpal.add(btnContinuar);
@@ -94,8 +100,18 @@ public final class VentanaNombresDosJugadores {
         JFrame1.setVisible(true);
     }
 
+    public String getNombreJugadorUno() {
+        return nombreJugadorUno;
+    }
+
+    public String getNombreJugadorDos() {
+        return nombreJugadorDos;
+    }
+
     public JFrame getJFrame1() {
         return JFrame1;
     }
+
+    
 
 }

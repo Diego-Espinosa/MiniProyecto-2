@@ -37,9 +37,17 @@ public final class VentanaJuegoUnoContraUno implements KeyListener {
     private int currentRow = 0;
     private int currentCol = 0;
     private JLabel lblGanador; 
+    private VentanaNombresDosJugadores ventanaNombres;
+    private String nombreJugadorUno;
+    private String nombreJugadorDos;
+    
 
-    public VentanaJuegoUnoContraUno() {
+    public VentanaJuegoUnoContraUno(VentanaNombresDosJugadores ventanaNombres) {
+        this.ventanaNombres = ventanaNombres;
+        this.nombreJugadorUno = ventanaNombres.getNombreJugadorUno();
+        this.nombreJugadorDos = ventanaNombres.getNombreJugadorDos();
         initComponents();
+        
     }
 
     private void initComponents() {
@@ -133,6 +141,7 @@ public final class VentanaJuegoUnoContraUno implements KeyListener {
         panelPpal.add(btnSalir);
         panelPpal.setSize(500, 500);
         panelPpal.add(lblFondo);
+        panelPpal.add(lblGanador);
 
         JFrame1.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         JFrame1.setSize(500, 500);
@@ -190,13 +199,15 @@ public final class VentanaJuegoUnoContraUno implements KeyListener {
 
         }
         if (tieneTresEnLinea() && turno % 2 == 0) {
-            System.out.println("Ganador: Jugador O");
+         
             terminarPartida();
+            lblGanador.setText(nombreJugadorUno);
 
         } else {
             if (tieneTresEnLinea() && turno % 2 != 0) {
-                System.out.println("Ganador: Jugador X");
+                
                 terminarPartida();
+                lblGanador.setText(nombreJugadorDos);
 
             }
         }
