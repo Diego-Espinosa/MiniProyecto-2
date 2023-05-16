@@ -24,6 +24,7 @@ import javax.swing.JPanel;
 import java.util.Random;
 import static javax.swing.SpringLayout.NORTH;
 import java.awt.event.KeyListener;
+import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 
 /**
@@ -66,10 +67,12 @@ public class VentanaJuegoContraPC implements KeyListener {
         empates = 0;
 
         lblGanador = new JLabel();
-        lblGanador.setBounds(225, 80, 200, 50);
+        lblGanador.setBounds(220, 80, 100, 50);
         lblGanador.setBackground(cafe);
         lblGanador.setForeground(white);
         lblGanador.setVisible(true);
+        lblGanador.setHorizontalAlignment(SwingConstants.CENTER);
+        
         
         
         turnoHumano = true;
@@ -112,6 +115,7 @@ public class VentanaJuegoContraPC implements KeyListener {
 
                 }
                 if (tieneTresEnLinea() && turnoHumano) {
+                    lblGanador.setOpaque(true);
                     lblGanador.setText("¡Te ha vencido una computadora!");
                     victoriasJugadorO++;
                     System.out.println(victoriasJugadorO);
@@ -123,6 +127,7 @@ public class VentanaJuegoContraPC implements KeyListener {
                     if (tieneTresEnLinea() && !turnoHumano) {
                         
                         victoriasJugadorX++;
+                        lblGanador.setOpaque(true);
                         lblGanador.setText("¡Ganaste!");
                         System.out.println(victoriasJugadorX);
                         terminarPartida();
